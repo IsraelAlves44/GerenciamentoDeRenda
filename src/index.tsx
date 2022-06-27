@@ -9,6 +9,21 @@ createServer({
     transaction: Model,
   },
 
+  seeds(server){
+    server.db.loadData({
+      transactions: [
+        {
+          id: 1,
+          title: "Freelance",
+          type: "deposit",
+          category: "Deposit",
+          amount: 100,
+          createdAt: new Date("10/11/2020")
+        }
+      ]
+    })
+  },
+
   routes() {
     this.namespace = "api";
 
@@ -21,8 +36,6 @@ createServer({
       return schema.create("transaction", data);
     })
   }
-
-  
 })
 
 const root = ReactDOM.createRoot(

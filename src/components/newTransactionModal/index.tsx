@@ -5,7 +5,8 @@ import incomeImg from "../../assets/income.svg"
 import outcomeImg from "../../assets/outcome.svg"
 import { FormEvent, useState } from "react";
 import { api } from "../../services/api";
-
+import { useContext } from "react"
+import { TransactionsContext } from "../../TransactionsContext";
 
 interface NewTransactionModalProps {
     isOpen: boolean,
@@ -13,6 +14,9 @@ interface NewTransactionModalProps {
 
 }
 export function NewTransactionModal({isOpen, onRequestClose }: NewTransactionModalProps){
+
+    const transactions = useContext(TransactionsContext);
+
     const [type, setType] = useState("deposit")
     const [title, setTitle] = useState("");
     const [category, setCategory] = useState("");
@@ -27,8 +31,10 @@ export function NewTransactionModal({isOpen, onRequestClose }: NewTransactionMod
             category,
             value
         };
-
+        
         api.post("/transactions", data);
+        
+        
     }
 
     return(

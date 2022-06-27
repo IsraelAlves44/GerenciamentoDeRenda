@@ -1,14 +1,10 @@
-import { useEffect } from "react";
-import {api} from "../../services/api"
+import { useContext } from "react";
 import { Container } from "./styles";
+import { TransactionsContext } from "../../TransactionsContext"
 
 export function TransactionTable () {
+const transactions = useContext(TransactionsContext);
 
-    useEffect(()=>{
-        api.get("/transactions")
-            .then(resp => resp.data)
-    })
-    
     return (
         <Container>
             <table>
@@ -21,30 +17,21 @@ export function TransactionTable () {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Aluguel</td>
-                        <td className="withdraw">-R$14.000</td>
-                        <td>Vida</td>
-                        <td>20/04/2021</td>
+                    {transactions.map(transaction => (
+                    <tr key={transaction.id}>
+                        <td>{transaction.title}</td>
+                        <td className={transaction.type}>
+                            {new Intl.NumberFormat("pt-BR",{
+                                style: "currency",
+                                currency: "BRL"
+                            }).format(transaction.amount)
+                        }</td>
+                        <td>{transaction.category}</td>
+                        <td>
+                            {new Intl.DateTimeFormat("pt-br").format(new Date(transaction.amount))}
+                        </td>
                     </tr>
-                    <tr>
-                        <td>Website</td>
-                        <td className="deposit">R$14.000</td>
-                        <td>Desenvolvimento</td>
-                        <td>20/04/2021</td>
-                    </tr>
-                    <tr>
-                        <td>Website</td>
-                        <td className="deposit">R$14.000</td>
-                        <td>Desenvolvimento</td>
-                        <td>20/04/2021</td>
-                    </tr>
-                    <tr>
-                        <td>Website</td>
-                        <td className="deposit">R$14.000</td>
-                        <td>Desenvolvimento</td>
-                        <td>20/04/2021</td>
-                    </tr>
+                    ))}
                 </tbody>
             </table>
         </Container>
