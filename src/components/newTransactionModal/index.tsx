@@ -4,7 +4,6 @@ import closeImg from "../../assets/close.svg"
 import incomeImg from "../../assets/income.svg"
 import outcomeImg from "../../assets/outcome.svg"
 import { FormEvent, useState } from "react";
-import { api } from "../../services/api";
 import { useContext } from "react"
 import { TransactionsContext } from "../../TransactionsContext";
 
@@ -22,26 +21,22 @@ export function NewTransactionModal({isOpen, onRequestClose }: NewTransactionMod
     const [category, setCategory] = useState("");
     const [amount, setAmount] = useState(0);
 
-    function handleCreateNewTransaction(event: FormEvent){
+    async function handleCreateNewTransaction(event: FormEvent){
         event.preventDefault();
 
-        createTransactions({
+        await createTransactions({
             title,
             amount,
             category,
-            type
+            type,
         })
 
-        const data = {
-            type,
-            title,
-            category,
-            amount
-        };
-        
-        api.post("/transactions", data);
-        
-        
+       setTitle("");
+       setAmount(0);
+       setCategory("")
+       setType("deposit")
+       onRequestClose();
+
     }
 
     return(
@@ -55,7 +50,7 @@ export function NewTransactionModal({isOpen, onRequestClose }: NewTransactionMod
                 <img src={closeImg} alt="close" />
             </button>
 
-           <Container onClick={handleCreateNewTransaction}>
+           <Container >
             <h2>Cadastrar transações</h2>
 
             <input type="text" placeholder="Titulo" value={title} onChange={event => setTitle(event.target.value)}/>
@@ -83,7 +78,7 @@ export function NewTransactionModal({isOpen, onRequestClose }: NewTransactionMod
            
             <input type="text" placeholder="Categoria" value={category} onChange={event => setCategory(event.target.value)} />
            
-            <button type="submit">Cadastrar</button>
+            <button type="submit" onClick={handleCreateNewTransaction}>Cadastrar</button>
            </Container>
         </Modal>
     )

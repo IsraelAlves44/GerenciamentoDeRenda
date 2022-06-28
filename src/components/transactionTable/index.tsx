@@ -28,7 +28,7 @@ const {transactions } = useContext(TransactionsContext);
                         }</td>
                         <td>{transactions.category}</td>
                         <td>
-                            {new Intl.DateTimeFormat("pt-br").format(new Date(transactions.amount))}
+                            {new Intl.DateTimeFormat("pt-BR").format(new Date(transactions.createdAt))}
                         </td>
                     </tr>
                     ))}
