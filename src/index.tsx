@@ -4,7 +4,6 @@ import { createServer, Model } from 'miragejs'
 
 
 createServer({
-
   models: {
     transaction: Model,
   },
